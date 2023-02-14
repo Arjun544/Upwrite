@@ -6,10 +6,7 @@ import { Toaster } from "react-hot-toast";
 import { AppContext } from "./_app";
 
 export default function Home() {
-  const {
-    currentStep,
-    setCurrentStep,
-  } = useContext(AppContext);
+  const { currentStep, setCurrentStep } = useContext(AppContext);
 
   return (
     <>
@@ -19,8 +16,6 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      {/* <h1>Say goodbye to proposal struggles</h1> */}
 
       <div className="flex w-full min-h-screen gap-8 pr-4 pl-28 overflow-hidden">
         <Toaster containerClassName="text-sm" />

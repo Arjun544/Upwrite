@@ -5,7 +5,7 @@ import {
   RiHome5Fill,
   RiChatHistoryFill,
   RiAddLine,
-  RiLoginCircleFill,
+  RiInformationFill,
 } from "react-icons/ri";
 import { SiUpwork } from "react-icons/si";
 import SidebarTile from "./Sidebar_Tile";
@@ -38,10 +38,9 @@ const Sidebar = () => {
     },
     {
       id: 3,
-      link: "/login",
-      name: "Login",
-
-      icon: <RiLoginCircleFill size={26} className="text-dark" />,
+      link: "/about",
+      name: "About",
+      icon: <RiInformationFill size={26} className="text-dark" />,
     },
   ];
 
