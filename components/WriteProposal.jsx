@@ -64,7 +64,7 @@ const WriteProposal = () => {
           about
         );
         for (const question of questions.filter(
-          (question) => question.text.length > 0
+          (ques) => ques.text.length > 0
         )) {
           const { data: questionData } = await generateAnswer(question.text);
           console.log("question", question);

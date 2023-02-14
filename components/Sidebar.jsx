@@ -39,7 +39,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="flex flex-col h-full relative items-center justify-between px-4 py-4 bg-white border-r-2">
+    <div className="flex flex-col fixed h-full items-center justify-between px-4 py-4 bg-white border-r-2">
       <div className="flex flex-col gap-10 ">
         <Link href="/" className="text-primary">
           <SiUpwork size={45} />

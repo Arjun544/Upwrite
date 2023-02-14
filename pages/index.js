@@ -36,7 +36,7 @@ export default function Home() {
 
       {/* <h1>Say goodbye to proposal struggles</h1> */}
 
-      <div className="flex w-full min-h-screen gap-8 px-4">
+      <div className="flex w-full min-h-screen gap-8 pr-4 pl-28 overflow-hidden">
         <Toaster containerClassName="text-sm"/>
 
         {currentStep === 1 ? (

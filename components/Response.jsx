@@ -26,7 +26,7 @@ const Response = () => {
     });
   };
   return (
-    <div className="flex flex-col grow">
+    <div className="flex flex-col grow overflow-y-scroll">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-dark text-xl tracking-wider mb-8 pt-4">
           Craft winning proposals with ease
@@ -62,11 +62,13 @@ const Response = () => {
       </div>
 
       {/* Answers */}
-      <h1 className="tracking-wider">Additional Answers</h1>
-      {proposal.answers.map((question,index) => (
+      {proposal.answers && (
+        <h1 className="tracking-wider">Additional Answers</h1>
+      )}
+      {proposal.answers?.map((question, index) => (
         <div key={index} className="flex flex-col gap-2 mt-4">
-          <h1 className="bg-[#ECF2FF] px-2 py-2 rounded-xl text-sm tracking-wider">{`Q : ${question.question}`}</h1>
-          <h1 className="tracking-wider text-sm whitespace-pre-line">
+          <h1 className="text-sm pl-2 tracking-wider">{`Q ${index+1} : ${question.question}`}</h1>
+          <h1 className="tracking-wider text-sm bg-[#ECF2FF] px-2 py-2 rounded-xl">
             {`Ans : ${question.answer}`}
           </h1>
         </div>
