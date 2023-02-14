@@ -1,20 +1,27 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import uuid from "react-uuid";
 import { RiCloseCircleFill } from "react-icons/ri";
 import { HiLightningBolt } from "react-icons/hi";
 import { AppContext } from "@/pages";
 import { toast } from "react-hot-toast";
+import { MdOutlineError } from "react-icons/md";
+
+import { generateAnswer, generateProposal } from "@/services/chatgpt_services";
+import Btn_Loader from "./Btn_Loader";
 
 const WriteProposal = () => {
   const {
-    proposal,
     setProposal,
+    proposalInput,
+    setProposalInput,
     about,
     setAbout,
     questions,
     setQuestions,
     setCurrentStep,
   } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const handleAddQuestion = (e) => {
     e.preventDefault();
@@ -39,8 +46,8 @@ const WriteProposal = () => {
     setQuestions(list);
   };
 
-  const handleGenerate = () => {
-    if (proposal === "") {
+  const handleGenerate = async () => {
+    if (proposalInput === "") {
       toast("Proposal can't be empty", {
         icon: "🥺",
       });
@@ -49,7 +56,39 @@ const WriteProposal = () => {
         icon: "😍",
       });
     } else {
-      setCurrentStep(2);
+      try {
+        setIsLoading(true);
+        setHasError(false);
+        const { data: proposalData } = await generateProposal(
+          proposalInput,
+          about
+        );
+        for (const question of questions.filter(
+          (question) => question.text.length > 0
+        )) {
+          const { data: questionData } = await generateAnswer(question.text);
+          console.log("question", question);
+          setProposal({
+            text: proposalData.choices[0].text,
+            answers: [
+              {
+                question: question.text,
+                answer: questionData.choices[0].text,
+              },
+            ],
+            created: proposalData.created,
+          });
+        }
+        setIsLoading(false);
+        setCurrentStep(2);
+      } catch (error) {
+        setIsLoading(false);
+        setHasError(true);
+        console.log(error);
+        toast("The server had an error. Please try again!", {
+          icon: "🥺",
+        });
+      }
     }
   };
 
@@ -61,10 +100,23 @@ const WriteProposal = () => {
         </h1>
         <button
           onClick={handleGenerate}
-          className="flex items-center justify-center gap-4 bg-primary w-48 shadow-md text-sm rounded-xl py-3 px-8"
+          className={`flex items-center justify-center gap-4 w-48 shadow-md text-sm rounded-xl py-3 px-8 ${
+            hasError ? "bg-red-400" : "bg-primary"
+          }`}
         >
-          <HiLightningBolt />
-          <h1 className="tracking-wider">Generate</h1>
+          {isLoading ? (
+            <Btn_Loader />
+          ) : hasError ? (
+            <>
+              <MdOutlineError size={20} />
+              <h1 className="tracking-wider">Try again</h1>
+            </>
+          ) : (
+            <>
+              <HiLightningBolt />
+              <h1 className="tracking-wider">Generate</h1>
+            </>
+          )}
         </button>
       </div>
       <div className="w-full flex flex-col grow lg:flex-row gap-8">
@@ -79,10 +131,10 @@ const WriteProposal = () => {
             <textarea
               id="proposal"
               name="text"
-              value={proposal}
+              value={proposalInput}
               className="block p-4 mt-2 grow text-sm text-dark bg-[#ECF2FF] rounded-xl border-transparent focus:border-transparent focus:ring-2 outline-0"
               placeholder="Copy and paste job description here..."
-              onChange={(e) => setProposal(e.target.value)}
+              onChange={(e) => setProposalInput(e.target.value)}
             ></textarea>
           </div>
           <div className="flex flex-col grow">
@@ -111,8 +163,8 @@ const WriteProposal = () => {
             <div key={question.id} className="flex items-center my-2 gap-4">
               <input
                 id="proposal"
-                rows={2}
-                className="block p-4 w-full text-sm text-white bg-[#ECF2FF] rounded-xl border-transparent focus:border-transparent focus:ring-2 outline-0"
+                name="text"
+                className="block p-4 w-full text-sm text-dark bg-[#ECF2FF] rounded-xl border-transparent focus:border-transparent focus:ring-2 outline-0"
                 placeholder={`Question ${index + 1} here...`}
                 onChange={(e) => handleUpdateQuestion(e, index)}
               ></input>
@@ -125,7 +177,8 @@ const WriteProposal = () => {
           ))}
           <button
             onClick={handleAddQuestion}
-            className="bg-primary shadow-sm w-52 text-sm rounded-xl py-3 px-8 mt-6"
+            disabled={questions.length === 5}
+            className="bg-primary shadow-sm w-52 text-sm rounded-xl py-3 px-8 mt-6 disabled:bg-[#ECF2FF] disabled:cursor-not-allowed"
           >
             Add Question
           </button>

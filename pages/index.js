@@ -8,7 +8,8 @@ export const AppContext = createContext(null);
 
 export default function Home() {
   const [currentStep, setCurrentStep] = useState(1);
-  const [proposal, setProposal] = useState("");
+  const [proposal, setProposal] = useState({});
+  const [proposalInput, setProposalInput] = useState("");
   const [about, setAbout] = useState("");
   const [questions, setQuestions] = useState([]);
 
@@ -18,6 +19,8 @@ export default function Home() {
         setCurrentStep,
         proposal,
         setProposal,
+         proposalInput,
+        setProposalInput,
         about,
         setAbout,
         questions,
