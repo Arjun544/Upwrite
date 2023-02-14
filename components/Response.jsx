@@ -1,10 +1,10 @@
-import { AppContext } from "@/pages";
 import moment from "moment";
 import React, { useContext } from "react";
 import { RiTimeFill } from "react-icons/ri";
 import { TbCopy } from "react-icons/tb";
 import { MdArrowBackIos } from "react-icons/md";
 import { toast } from "react-hot-toast";
+import { AppContext } from "@/pages/_app";
 
 const Response = () => {
   const {

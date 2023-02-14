@@ -2,12 +2,12 @@ import React, { useContext, useState } from "react";
 import uuid from "react-uuid";
 import { RiCloseCircleFill } from "react-icons/ri";
 import { HiLightningBolt } from "react-icons/hi";
-import { AppContext } from "@/pages";
 import { toast } from "react-hot-toast";
 import { MdOutlineError } from "react-icons/md";
 
 import { generateAnswer, generateProposal } from "@/services/chatgpt_services";
 import Btn_Loader from "./Btn_Loader";
+import { AppContext } from "@/pages/_app";
 
 const WriteProposal = () => {
   const {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Link from "next/link";
 
 import {
@@ -9,12 +9,19 @@ import {
 } from "react-icons/ri";
 import { SiUpwork } from "react-icons/si";
 import SidebarTile from "./Sidebar_Tile";
+import { AppContext } from "@/pages/_app";
+import { useRouter } from "next/router";
 
 const Sidebar = () => {
+  const router = useRouter();
+  const {
+    setCurrentStep,
+    setProposal,
+    setProposalInput,
+    setAbout,
+    setQuestions,
+  } = useContext(AppContext);
   const [isShowingToolTip, setIsShowingToolTip] = useState(false);
-
-  const handleShowToolTip = () => setIsShowingToolTip(true);
-  const handleHideToolTip = () => setIsShowingToolTip(false);
 
   const items = [
     {
@@ -38,6 +45,18 @@ const Sidebar = () => {
     },
   ];
 
+  const handleShowToolTip = () => setIsShowingToolTip(true);
+  const handleHideToolTip = () => setIsShowingToolTip(false);
+  const handleAddNewProposal = () => {
+    setCurrentStep(1);
+    setProposal({});
+    setProposalInput("");
+    setAbout("");
+    setQuestions([]);
+    if (router.asPath !== "/") {
+      router.push("/");
+    }
+  };
   return (
     <div className="flex flex-col fixed h-full items-center justify-between px-4 py-4 bg-white border-r-2">
       <div className="flex flex-col gap-10 ">
@@ -49,6 +68,7 @@ const Sidebar = () => {
         ))}
       </div>
       <div
+        onClick={handleAddNewProposal}
         onMouseEnter={handleShowToolTip}
         onMouseLeave={handleHideToolTip}
         className="flex items-center relative justify-around h-12 rounded-xl gap-4 px-4 bg-primary cursor-pointer hover:bg-opacity-80 transition-all duration-300"
