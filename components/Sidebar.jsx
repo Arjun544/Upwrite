@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 
 import {
@@ -8,41 +8,57 @@ import {
   RiLoginCircleFill,
 } from "react-icons/ri";
 import { SiUpwork } from "react-icons/si";
+import SidebarTile from "./Sidebar_Tile";
 
 const Sidebar = () => {
+  const [isShowingToolTip, setIsShowingToolTip] = useState(false);
+
+  const handleShowToolTip = () => setIsShowingToolTip(true);
+  const handleHideToolTip = () => setIsShowingToolTip(false);
+
+  const items = [
+    {
+      id: 1,
+      link: "/",
+      name: "Home",
+      icon: <RiHome5Fill size={26} className="text-dark" />,
+    },
+    {
+      id: 2,
+      link: "/history",
+      name: "History",
+      icon: <RiChatHistoryFill size={26} className="text-dark" />,
+    },
+    {
+      id: 3,
+      link: "/login",
+      name: "Login",
+
+      icon: <RiLoginCircleFill size={26} className="text-dark" />,
+    },
+  ];
+
   return (
-    <div className="flex fixed py-4 w-full items-center justify-around bg-[#2D4263] gap-12">
-      <Link href="/" className="text-primary mr-24">
-        <SiUpwork size={45} />
-      </Link>
-
-      <div className="flex flex-row gap-8">
-        <Link
-          href="/"
-          className="flex items-center gap-3 py-2 px-6 rounded-xl hover:bg-primary transition-all duration-300"
-        >
-          <RiHome5Fill size={26} className="text-white" />
-          <h1 className="tracking-widest text-sm text-white">Home</h1>
+    <div class="flex flex-col h-full relative items-center justify-between px-4 py-4 bg-white border-r-2">
+      <div className="flex flex-col gap-10 ">
+        <Link href="/" className="text-primary">
+          <SiUpwork size={45} />
         </Link>
-        <Link
-          href="/history"
-          className="flex items-center gap-3 py-2 px-6 rounded-xl hover:bg-primary transition-all duration-300"
-        >
-          <RiChatHistoryFill size={26} className="text-white" />
-          <h1 className="tracking-widest text-sm text-white">History</h1>
-        </Link>
-        <Link
-          href="/login"
-          className="flex items-center gap-3 py-2 px-6 rounded-xl hover:bg-primary transition-all duration-300"
-        >
-          <RiLoginCircleFill size={26} className="text-white" />
-          <h1 className="tracking-widest text-sm text-white">Login</h1>
-        </Link>
+        {items.map((item) => (
+          <SidebarTile key={item.id} item={item} />
+        ))}
       </div>
-
-      <div className="flex items-center justify-around h-12 rounded-xl gap-4 px-4 bg-primary cursor-pointer hover:bg-opacity-80 transition-all duration-300">
+      <div
+        onMouseEnter={handleShowToolTip}
+        onMouseLeave={handleHideToolTip}
+        className="flex items-center relative justify-around h-12 rounded-xl gap-4 px-4 bg-primary cursor-pointer hover:bg-opacity-80 transition-all duration-300"
+      >
         <RiAddLine size={26} className="text-white" />
-        <h1 className="text-white text-sm tracking-wider">New proposal</h1>
+        {isShowingToolTip && (
+          <div className="flex absolute items-center justify-center left-16 w-32 py-1 bg-dark rounded-lg">
+            <span className="text-sm text-white">New Proposal</span>
+          </div>
+        )}
       </div>
     </div>
   );
