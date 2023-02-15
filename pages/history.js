@@ -95,7 +95,7 @@ export default function History() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex flex-col pl-28 pt-4">
+      <div className="flex flex-col pl-24 md:pl-28 pt-4">
         <h1 className="tracking-wider text-lg">History</h1>
         {isLoading && (
           <div className="flex flex-col items-center justify-center w-full pt-96 gap-4">
@@ -121,7 +121,7 @@ export default function History() {
           </div>
         )}
         {!isLoading && !error && history.length !== 0 && (
-          <div className="grid grid-cols-2 gap-6 my-6 pr-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 my-6 pr-4 md:pr-8">
             {history.map((item) => (
               <div
                 key={item.id}
@@ -129,7 +129,7 @@ export default function History() {
                 className="flex items-center bg-[#ECF2FF] pl-4 py-4 rounded-2xl cursor-pointer hover:shadow-md"
               >
                 <div className="grid grid-cols-12 grow gap-4">
-                  <h1 className="col-span-11 text-xs tracking-wider truncate text-ellipsis overflow-hidden">
+                  <h1 className="col-span-10 md:col-span-11 text-xs tracking-wider truncate text-ellipsis overflow-hidden">
                     {item.proposal.text}...
                   </h1>
                   <IoMdTrash

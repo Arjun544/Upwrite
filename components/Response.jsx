@@ -1,6 +1,4 @@
-import moment from "moment";
 import React, { useContext, useEffect } from "react";
-import { RiTimeFill } from "react-icons/ri";
 import { TbCopy } from "react-icons/tb";
 import { MdArrowBackIos } from "react-icons/md";
 import { toast } from "react-hot-toast";
@@ -59,7 +57,7 @@ const Response = () => {
     if (!isOnlyViewingProposal) {
       saveHistory();
     }
-  }, [proposal, isOnlyViewingProposal, session.user.id]);
+  }, []);
 
   const handleBack = () => {
     setCurrentStep(1);
@@ -86,22 +84,12 @@ const Response = () => {
         </button>
       </div>
       <div className="flex flex-col p-4 w-full bg-[#ECF2FF] mb-4 rounded-2xl gap-4">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center px-4 gap-2 h-10 rounded-xl bg-slate-300">
-            <RiTimeFill size={20} />
-            <h1 className="text-sm">
-              {moment(Date.parse(Date(proposal.created * 1000)))
-                .startOf("hour")
-                .fromNow()}
-            </h1>
-          </div>
-          <div
-            onClick={handleCopy}
-            className="flex items-center px-4 gap-4 h-10 rounded-xl cursor-pointer bg-blue-200 hover:bg-blue-300 transition-all duration-300"
-          >
-            <TbCopy size={20} />
-            <h1 className="text-sm">Copy</h1>
-          </div>
+        <div
+          onClick={handleCopy}
+          className="flex items-center justify-center w-28 gap-4 h-10 rounded-xl cursor-pointer bg-blue-200 hover:bg-blue-300 transition-all duration-300"
+        >
+          <TbCopy size={20} />
+          <h1 className="text-sm">Copy</h1>
         </div>
         <h1 className="tracking-widest">Proposal</h1>
         <p className="text-sm whitespace-pre-wrap">{proposal.text}</p>

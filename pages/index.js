@@ -20,7 +20,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="flex w-full min-h-screen gap-8 pr-4 pl-28 overflow-hidden">
+      <div className="flex w-full min-h-screen gap-8 pr-4 pl-24 md:pl-28 overflow-hidden">
         <Toaster containerClassName="text-sm" />
 
         {currentStep === 1 ? (
