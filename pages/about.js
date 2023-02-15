@@ -12,14 +12,14 @@ export default function About() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex flex-col items-center justify-evenly h-full pl-16 ml-2 md:ml-0 md:pl-28">
+      <div className="flex flex-col items-center justify-evenly py-4 pl-16 ml-2 md:ml-0 md:pl-28">
         <h1 className="text-xl md:text-3xl text-primary tracking-wider font-semibold">
           Say goodbye to proposal struggles
         </h1>
 
         <div className="flex flex-col items-center">
-          <h1 className="text-xl text-dark tracking-wider">What is Upwrite?</h1>
-          <p className="w-full first-letter:text-4xl md:w-3/5 tracking-wider pr-4">
+          <h1 className="text-xl text-dark tracking-wider pt-10 pb-4">What is Upwrite?</h1>
+          <p className="w-full text-sm md:text-base first-letter:text-2xl md:first-letter:text-4xl md:w-3/5 tracking-wider pr-4">
             Upwrite is the Upwork Job Proposal Generator, the ultimate tool for
             freelancers looking to win more clients and projects on Upwork. Our
             app leverages the power of OpenAI natural language processing to
@@ -28,7 +28,7 @@ export default function About() {
           </p>
         </div>
         <div className="flex flex-col w-full md:w-1/2 items-center gap-6 pr-4">
-          <h1 className="text-xl text-dark tracking-wider">About Developer</h1>
+          <h1 className="text-xl text-dark tracking-wider pt-10">About Developer</h1>
 
           <div className="w-full max-w-sm bg-white border border-gray-200 rounded-3xl shadow dark:bg-gray-800 dark:border-gray-700">
             <div className="flex flex-col items-center py-10">
