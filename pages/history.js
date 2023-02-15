@@ -1,9 +1,55 @@
 import Head from "next/head";
-import {getSession, useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { RiGoogleFill } from "react-icons/ri";
+import { useContext, useEffect, useState } from "react";
+import { supabase } from "@/utils/supabase";
+import { IoMdTrash } from "react-icons/io";
+import { AppContext } from "./_app";
+import { useRouter } from "next/router";
+import Btn_Loader from "@/components/Btn_Loader";
 
 export default function History() {
+  const { setCurrentStep, setProposal, setIsOnlyViewingProposal } =
+    useContext(AppContext);
+  const router = useRouter();
   const { data: session } = useSession();
+  const [history, setHistory] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+
+  useEffect(() => {
+    const getHistory = async () => {
+      setIsLoading(true);
+      const { data, error } = await supabase
+        .from("proposals")
+        .select("*")
+        .eq("user_id", session.user.id);
+      setHistory(data);
+      setError(error);
+      setIsLoading(false);
+
+      console.log(data);
+    };
+    getHistory();
+  }, [session.user.id]);
+
+  const handleAddNew = () => {
+    setCurrentStep(1);
+    router.push("/");
+  };
+
+  const handleOnClick = (item) => {
+    setProposal({
+      text: item.proposal.text,
+      answers: item.proposal.answers,
+      description: item.proposal.description,
+      about: item.proposal.about,
+      created: item.proposal.created_at,
+    });
+    setIsOnlyViewingProposal(true);
+    router.push("/");
+    setCurrentStep(2);
+  };
 
   if (!session) {
     return (
@@ -16,7 +62,6 @@ export default function History() {
           >
             <RiGoogleFill size={24} className="text-blue-400" />
             <h1 className="text-white text-sm">Continue with Google</h1>
-
           </button>
         </div>
       </div>
@@ -31,10 +76,53 @@ export default function History() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <span>Signed in as {session.user.email} </span>
-      <button onClick={() => signOut()}>Signout</button>
+      <div className="flex flex-col pl-28 pt-4">
+        <h1 className="tracking-wider text-lg">History</h1>
+        {isLoading && (
+          <div className="flex flex-col items-center justify-center w-full pt-96 gap-4">
+            <Btn_Loader text={"Loading"} />
+          </div>
+        )}
+        {error && !isLoading && history.length === 0 && (
+          <div className="flex flex-col items-center justify-center w-full pt-96 gap-4">
+            <h1 className="text-slate-500 tracking-wider">
+              Failed to get history
+            </h1>
+          </div>
+        )}
+        {!isLoading && !error && history.length === 0 && (
+          <div className="flex flex-col items-center justify-center w-full pt-96 gap-4">
+            <h1 className="text-slate-500 tracking-wider">No History</h1>
+            <button
+              onClick={handleAddNew}
+              className="flex items-center justify-center gap-4 w-48 shadow-md text-sm rounded-xl py-3 px-8 bg-primary hover:bg-opacity-70"
+            >
+              Add New
+            </button>
+          </div>
+        )}
+        {!isLoading && !error && history.length !== 0 && (
+          <div className="grid grid-cols-2 gap-6 my-6 pr-8">
+            {history.map((item) => (
+              <div
+                key={item.id}
+                onClick={(e) => handleOnClick(item)}
+                className="flex items-center bg-[#ECF2FF] pl-4 py-4 rounded-2xl cursor-pointer hover:shadow-md"
+              >
+                <div className="grid grid-cols-12 grow gap-4">
+                  <h1 className="col-span-11 text-xs tracking-wider truncate text-ellipsis overflow-hidden">
+                    {item.proposal.text}...
+                  </h1>
+                  <IoMdTrash
+                    size={20}
+                    className="text-red-400 hover:text-red-500"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </>
   );
-
-  
 }

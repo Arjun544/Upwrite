@@ -91,6 +91,8 @@ const WriteProposal = () => {
                   answer: questionData.choices[0].text,
                 },
               ],
+              description: descriptionInput,
+              about: about,
               created: proposalData.created,
             });
           }
@@ -98,6 +100,8 @@ const WriteProposal = () => {
           setProposal({
             text: proposalData.choices[0].text,
             answers: [],
+            description: descriptionInput,
+            about: about,
             created: proposalData.created,
           });
         }
@@ -136,7 +140,7 @@ const WriteProposal = () => {
             }`}
           >
             {isLoading ? (
-              <Btn_Loader />
+              <Btn_Loader text={'Generating'}/>
             ) : hasError ? (
               <>
                 <MdOutlineError size={20} />
@@ -187,7 +191,7 @@ const WriteProposal = () => {
           </div>
         </div>
 
-        <div className="flex grow flex-col bg-white">
+        <div className="flex flex-col w-2/5 bg-white">
           <h1 className="text-dark tracking-wider mb-5 text-sm">
             Additional questions
           </h1>

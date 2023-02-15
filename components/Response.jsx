@@ -7,19 +7,13 @@ import { toast } from "react-hot-toast";
 import { AppContext } from "@/pages/_app";
 import { useSession } from "next-auth/react";
 import uuid from "react-uuid";
-import { SupabaseContext } from "@/pages";
+import { supabase } from "@/utils/supabase";
 
 const Response = () => {
-  const { supabase } = useContext(SupabaseContext);
   const {
     proposal,
-    setProposal,
-    descriptionInput,
-    setDescriptionInput,
-    about,
-    setAbout,
-    questions,
-    setQuestions,
+    isOnlyViewingProposal,
+    setIsOnlyViewingProposal,
     setCurrentStep,
   } = useContext(AppContext);
   const { data: session } = useSession();
@@ -62,11 +56,14 @@ const Response = () => {
           });
       }
     };
-    saveHistory();
-  }, [proposal]);
+    if (!isOnlyViewingProposal) {
+      saveHistory();
+    }
+  }, [proposal, isOnlyViewingProposal, session.user.id]);
 
   const handleBack = () => {
     setCurrentStep(1);
+    setIsOnlyViewingProposal(false);
   };
   const handleCopy = () => {
     navigator.clipboard.writeText(proposal.text);
@@ -111,7 +108,7 @@ const Response = () => {
       </div>
 
       {/* Answers */}
-      {proposal.answers && (
+      {proposal.answers?.length !== 0 && (
         <h1 className="tracking-wider">Additional Answers</h1>
       )}
       {proposal.answers?.map((question, index) => (

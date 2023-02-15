@@ -21,6 +21,7 @@ export default function App({
   const [descriptionInput, setDescriptionInput] = useState("");
   const [about, setAbout] = useState("");
   const [questions, setQuestions] = useState([]);
+  const [isOnlyViewingProposal, setIsOnlyViewingProposal] = useState(false);
 
   return (
     <SessionProvider session={session}>
@@ -37,6 +38,8 @@ export default function App({
             setAbout,
             questions,
             setQuestions,
+            isOnlyViewingProposal,
+            setIsOnlyViewingProposal,
           }}
         >
           <Layout>
