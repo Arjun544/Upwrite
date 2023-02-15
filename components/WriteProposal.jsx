@@ -163,7 +163,7 @@ const WriteProposal = () => {
               Job Description
             </label>
             <textarea
-              id="proposal"
+              id="Job description"
               name="text"
               value={descriptionInput}
               className="block p-4 mt-2 grow text-sm text-dark bg-[#ECF2FF] rounded-xl border-transparent focus:border-transparent focus:ring-2 outline-0"
@@ -179,7 +179,7 @@ const WriteProposal = () => {
               About You
             </label>
             <textarea
-              id="proposal"
+              id="About"
               name="text"
               value={about}
               className="block p-4 mt-2 mb-4 grow text-sm text-dark bg-[#ECF2FF] rounded-xl border-transparent focus:border-transparent focus:ring-2 outline-0"

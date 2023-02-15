@@ -25,6 +25,7 @@ const SidebarTile = ({ item }) => {
           }
         }}
         href={item.link}
+        aria-label={item.name}
         className="flex items-center justify-center"
       >
         {item.icon}

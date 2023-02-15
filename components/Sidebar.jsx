@@ -77,6 +77,7 @@ const Sidebar = () => {
             setCurrentStep(1);
           }}
           href="/"
+          aria-label="Home"
           className="text-primary"
         >
           <SiUpwork size={45} />
