@@ -2,7 +2,6 @@ import "@/styles/globals.css";
 import { Poppins } from "@next/font/google";
 import Layout from "../components/Layout.jsx";
 import { createContext, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
 
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700"],
@@ -22,20 +21,6 @@ export default function App({
   const [proposalInput, setProposalInput] = useState("");
   const [about, setAbout] = useState("");
   const [questions, setQuestions] = useState([]);
-  const { supabaseAccessToken } = session || {};
-
-  // Create a single supabase client for interacting with your database
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_KEY,
-    {
-      global: {
-        headers: {
-          Authorization: `Bearer ${supabaseAccessToken ?? ""}`,
-        },
-      },
-    }
-  );
 
   return (
     <SessionProvider session={session}>

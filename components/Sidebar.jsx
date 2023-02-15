@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import Link from "next/link";
-import { getSession, useSession, signIn, signOut } from "next-auth/react";
-
+import { useSession, signIn, signOut } from "next-auth/react";
 
 import {
   RiHome5Fill,
@@ -107,7 +106,7 @@ const Sidebar = () => {
             className="flex items-center relative justify-around cursor-pointer transition-all duration-300"
           >
             <Image
-              src={session.user?.image || '/assets/placeholder.jpg'}
+              src={session.user?.image || "/assets/placeholder.jpg"}
               alt="User Profile"
               width={40}
               height={40}

@@ -1,20 +1,69 @@
 import moment from "moment";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { RiTimeFill } from "react-icons/ri";
 import { TbCopy } from "react-icons/tb";
 import { MdArrowBackIos } from "react-icons/md";
 import { toast } from "react-hot-toast";
 import { AppContext } from "@/pages/_app";
+import { useSession } from "next-auth/react";
+import uuid from "react-uuid";
+import { SupabaseContext } from "@/pages";
 
 const Response = () => {
+  const { supabase } = useContext(SupabaseContext);
   const {
     proposal,
+    setProposal,
     proposalInput,
+    setProposalInput,
     about,
+    setAbout,
     questions,
     setQuestions,
     setCurrentStep,
   } = useContext(AppContext);
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    const saveHistory = async () => {
+      const { data: records, error } = await supabase
+        .from("history")
+        .select("*")
+        .eq("user_id", session.user.id);
+      console.log("hasRecord", records);
+      // If has history record, only insert proposal ,else create new record
+      if (records.length > 0) {
+        console.log("Has record");
+        const { error: proposalError } = await supabase
+          .from("proposals")
+          .insert({
+            id: uuid(),
+            history_id: records[0].id,
+            user_id: session.user.id,
+            proposal: proposal,
+          });
+      } else {
+        console.log("Has no record");
+        const { data: historyData, error: historyError } = await supabase
+          .from("history")
+          .insert({
+            id: uuid(),
+            user_id: session.user.id,
+          })
+          .select();
+        console.log("history Data", historyData);
+        const { error: proposalError } = await supabase
+          .from("proposals")
+          .insert({
+            id: uuid(),
+            history_id: historyData[0].id,
+            user_id: session.user.id,
+            proposal: proposal,
+          });
+      }
+    };
+    saveHistory();
+  }, [proposal]);
 
   const handleBack = () => {
     setCurrentStep(1);
@@ -67,7 +116,9 @@ const Response = () => {
       )}
       {proposal.answers?.map((question, index) => (
         <div key={index} className="flex flex-col gap-2 mt-4">
-          <h1 className="text-sm pl-2 tracking-wider">{`Q ${index+1} : ${question.question}`}</h1>
+          <h1 className="text-sm pl-2 tracking-wider">{`Q ${index + 1} : ${
+            question.question
+          }`}</h1>
           <h1 className="tracking-wider text-sm bg-[#ECF2FF] px-2 py-2 rounded-xl">
             {`Ans : ${question.answer}`}
           </h1>

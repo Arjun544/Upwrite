@@ -38,13 +38,3 @@ export default function History() {
 
   
 }
-
-export async function getServerSideProps(ctx) {
-  const session = await getSession(ctx);
-
-  return {
-    props: {
-      session,
-    },
-  };
-}
