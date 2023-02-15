@@ -1,8 +1,10 @@
+import { AppContext } from "@/pages/_app";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 const SidebarTile = ({ item }) => {
+  const { setCurrentStep } = useContext(AppContext);
   const router = useRouter();
   const [isShowingToolTip, setIsShowingToolTip] = useState(false);
 
@@ -16,7 +18,15 @@ const SidebarTile = ({ item }) => {
       onMouseLeave={handleHideToolTip}
       className="flex flex-col items-center"
     >
-      <Link href={item.link} className="flex items-center justify-center">
+      <Link
+        onClick={(e) => {
+          if (item.link === "/") {
+            setCurrentStep(1);
+          }
+        }}
+        href={item.link}
+        className="flex items-center justify-center"
+      >
         {item.icon}
       </Link>
       <div

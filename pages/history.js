@@ -7,6 +7,7 @@ import { IoMdTrash } from "react-icons/io";
 import { AppContext } from "./_app";
 import { useRouter } from "next/router";
 import Btn_Loader from "@/components/Btn_Loader";
+import { toast } from "react-hot-toast";
 
 export default function History() {
   const { setCurrentStep, setProposal, setIsOnlyViewingProposal } =
@@ -51,6 +52,24 @@ export default function History() {
     setCurrentStep(2);
   };
 
+  const handleDelete = async (e, id) => {
+    e.stopPropagation();
+    const { error } = await supabase.from("proposals").delete().eq("id", id);
+    if (error) {
+      toast("Failed to delete", {
+        icon: "🥺",
+      });
+    } else {
+      toast("Successfully deleted", {
+        icon: "🚀",
+      });
+      const filteredHistory = history.filter(function (e) {
+        return e.id !== id;
+      });
+      setHistory(filteredHistory);
+      
+    }
+  };
   if (!session) {
     return (
       <div className="flex items-center justify-center w-full h-full">
@@ -114,6 +133,7 @@ export default function History() {
                     {item.proposal.text}...
                   </h1>
                   <IoMdTrash
+                    onClick={(e) => handleDelete(e, item.id)}
                     size={20}
                     className="text-red-400 hover:text-red-500"
                   />
