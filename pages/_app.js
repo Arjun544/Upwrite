@@ -2,6 +2,8 @@ import "@/styles/globals.css";
 import { Poppins } from "@next/font/google";
 import Layout from "../components/Layout.jsx";
 import { createContext, useState } from "react";
+import NextNProgress from "nextjs-progressbar";
+
 
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700"],
@@ -43,6 +45,7 @@ export default function App({
           }}
         >
           <Layout>
+            <NextNProgress color="#03C988" height={5} />
             <Component {...pageProps} />
           </Layout>
         </AppContext.Provider>
