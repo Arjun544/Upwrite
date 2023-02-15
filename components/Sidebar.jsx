@@ -22,7 +22,7 @@ const Sidebar = () => {
   const {
     setCurrentStep,
     setProposal,
-    setProposalInput,
+    setDescriptionInput,
     setAbout,
     setQuestions,
   } = useContext(AppContext);
@@ -62,7 +62,7 @@ const Sidebar = () => {
   const handleAddNewProposal = () => {
     setCurrentStep(1);
     setProposal({});
-    setProposalInput("");
+    setDescriptionInput("");
     setAbout("");
     setQuestions([]);
     if (router.asPath !== "/") {
@@ -123,7 +123,7 @@ const Sidebar = () => {
           onClick={handleAddNewProposal}
           onMouseEnter={handleShowProposalToolTip}
           onMouseLeave={handleHideProposalToolTip}
-          className="flex items-center relative justify-around h-12 rounded-xl gap-4 px-4 bg-primary cursor-pointer hover:bg-opacity-80 transition-all duration-300"
+          className="flex items-center relative justify-around h-11 rounded-xl gap-4 px-3 bg-primary cursor-pointer hover:bg-opacity-80 transition-all duration-300"
         >
           <RiAddLine size={26} className="text-white" />
           {isShowingProposalToolTip && (

@@ -14,8 +14,8 @@ const Response = () => {
   const {
     proposal,
     setProposal,
-    proposalInput,
-    setProposalInput,
+    descriptionInput,
+    setDescriptionInput,
     about,
     setAbout,
     questions,

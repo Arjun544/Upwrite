@@ -12,8 +12,8 @@ import { AppContext } from "@/pages/_app";
 const WriteProposal = () => {
   const {
     setProposal,
-    proposalInput,
-    setProposalInput,
+    descriptionInput,
+    setDescriptionInput,
     about,
     setAbout,
     questions,
@@ -22,6 +22,7 @@ const WriteProposal = () => {
   } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [isReqTakingLong, setIsReqTakingLong] = useState(false);
 
   const handleAddQuestion = (e) => {
     e.preventDefault();
@@ -47,20 +48,32 @@ const WriteProposal = () => {
   };
 
   const handleGenerate = async () => {
-    if (proposalInput === "") {
-      toast("Proposal can't be empty", {
+    if (descriptionInput === "") {
+      toast("Job description can't be empty", {
+        icon: "🥺",
+      });
+    } else if (descriptionInput.length <= 10) {
+      toast("Looks like dummy Job description", {
         icon: "🥺",
       });
     } else if (about === "") {
       toast("Write something about you", {
         icon: "😍",
       });
+    } else if (about.length <= 10) {
+      toast("Looks like a dummy information about you", {
+        icon: "🥺",
+      });
     } else {
       try {
+        setTimeout(() => {
+          setIsReqTakingLong(true);
+        }, 8000);
+
         setIsLoading(true);
         setHasError(false);
         const { data: proposalData } = await generateProposal(
-          proposalInput,
+          descriptionInput,
           about
         );
 
@@ -107,26 +120,36 @@ const WriteProposal = () => {
         <h1 className="text-dark text-xl tracking-wider mb-8 pt-4">
           Craft winning proposals with ease
         </h1>
-        <button
-          onClick={handleGenerate}
-          className={`flex items-center justify-center gap-4 w-48 shadow-md text-sm rounded-xl py-3 px-8 ${
-            hasError ? "bg-red-400" : "bg-primary"
-          }`}
-        >
-          {isLoading ? (
-            <Btn_Loader />
-          ) : hasError ? (
-            <>
-              <MdOutlineError size={20} />
-              <h1 className="tracking-wider">Try again</h1>
-            </>
-          ) : (
-            <>
-              <HiLightningBolt />
-              <h1 className="tracking-wider">Generate</h1>
-            </>
+        <div className="flex items-center gap-4">
+          {isReqTakingLong && (
+            <div className="flex items-center gap-2 animate-pulse">
+              <h1 className="text-xl">🥺</h1>
+              <h1 className="tracking-wider text-xs text-gray-500">
+                High server traffic causing delay ...
+              </h1>
+            </div>
           )}
-        </button>
+          <button
+            onClick={handleGenerate}
+            className={`flex items-center justify-center gap-4 w-48 shadow-md text-sm rounded-xl py-3 px-8 ${
+              hasError ? "bg-red-400" : "bg-primary"
+            }`}
+          >
+            {isLoading ? (
+              <Btn_Loader />
+            ) : hasError ? (
+              <>
+                <MdOutlineError size={20} />
+                <h1 className="tracking-wider">Try again</h1>
+              </>
+            ) : (
+              <>
+                <HiLightningBolt />
+                <h1 className="tracking-wider">Generate</h1>
+              </>
+            )}
+          </button>
+        </div>
       </div>
       <div className="w-full flex flex-col grow lg:flex-row gap-8">
         <div className="flex flex-col grow bg-white">
@@ -140,10 +163,10 @@ const WriteProposal = () => {
             <textarea
               id="proposal"
               name="text"
-              value={proposalInput}
+              value={descriptionInput}
               className="block p-4 mt-2 grow text-sm text-dark bg-[#ECF2FF] rounded-xl border-transparent focus:border-transparent focus:ring-2 outline-0"
               placeholder="Copy and paste job description here..."
-              onChange={(e) => setProposalInput(e.target.value)}
+              onChange={(e) => setDescriptionInput(e.target.value)}
             ></textarea>
           </div>
           <div className="flex flex-col grow">

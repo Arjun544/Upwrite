@@ -18,7 +18,7 @@ export default function App({
 }) {
   const [currentStep, setCurrentStep] = useState(1);
   const [proposal, setProposal] = useState({});
-  const [proposalInput, setProposalInput] = useState("");
+  const [descriptionInput, setDescriptionInput] = useState("");
   const [about, setAbout] = useState("");
   const [questions, setQuestions] = useState([]);
 
@@ -31,8 +31,8 @@ export default function App({
             currentStep,
             proposal,
             setProposal,
-            proposalInput,
-            setProposalInput,
+            descriptionInput,
+            setDescriptionInput,
             about,
             setAbout,
             questions,
