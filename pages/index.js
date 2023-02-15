@@ -35,9 +35,11 @@ export default function Home() {
 
 export async function getServerSideProps(ctx) {
   const session = await getSession(ctx);
-  nookies.set(ctx, "supabaseAccessToken", session.supabaseAccessToken, {
-    path: "/",
-  });
+  if (session) {
+    nookies.set(ctx, "supabaseAccessToken", session.supabaseAccessToken, {
+      path: "/",
+    });
+  }
 
   return {
     props: {

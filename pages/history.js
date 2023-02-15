@@ -31,8 +31,10 @@ export default function History() {
 
       console.log(data);
     };
-    getHistory();
-  }, [session.user.id]);
+    if (session) {
+      getHistory();
+    }
+  }, [session?.user?.id, session]);
 
   const handleAddNew = () => {
     setCurrentStep(1);
@@ -66,7 +68,6 @@ export default function History() {
         return e.id !== id;
       });
       setHistory(filteredHistory);
-      
     }
   };
   if (!session) {
@@ -95,7 +96,7 @@ export default function History() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex flex-col pl-24 md:pl-28 pt-4">
-        <h1 className="tracking-wider text-lg">History</h1>
+        <h1 className="tracking-wider text-xl">History</h1>
         {isLoading && (
           <div className="flex flex-col items-center justify-center w-full pt-96 gap-4">
             <Btn_Loader text={"Loading"} />
