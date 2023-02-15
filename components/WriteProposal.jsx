@@ -93,7 +93,6 @@ const WriteProposal = () => {
               ],
               description: descriptionInput,
               about: about,
-              created: proposalData.created,
             });
           }
         } else {
@@ -102,7 +101,6 @@ const WriteProposal = () => {
             answers: [],
             description: descriptionInput,
             about: about,
-            created: proposalData.created,
           });
         }
         setIsLoading(false);

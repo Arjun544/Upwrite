@@ -45,7 +45,6 @@ export default function History() {
       answers: item.proposal.answers,
       description: item.proposal.description,
       about: item.proposal.about,
-      created: item.proposal.created_at,
     });
     setIsOnlyViewingProposal(true);
     router.push("/");
