@@ -65,8 +65,9 @@ const WriteProposal = () => {
         icon: "🥺",
       });
     } else {
+      var timeout;
       try {
-        setTimeout(() => {
+        timeout = setTimeout(() => {
           setIsReqTakingLong(true);
         }, 8000);
 
@@ -108,6 +109,8 @@ const WriteProposal = () => {
       } catch (error) {
         setIsLoading(false);
         setHasError(true);
+        clearTimeout(timeout);
+        setIsReqTakingLong(false);
         console.log(error);
         toast("The server had an error. Please try again!", {
           icon: "🥺",
@@ -119,12 +122,12 @@ const WriteProposal = () => {
   return (
     <div className="flex flex-col grow">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-dark text-xl tracking-wider mb-8 pt-4">
+        <h1 className="text-dark md:text-xl tracking-wider mb-8 pt-4">
           Craft winning proposals with ease
         </h1>
         <div className="flex items-center gap-4">
           {isReqTakingLong && (
-            <div className="flex items-center gap-2 animate-pulse">
+            <div className="hidden items-center gap-2 animate-pulse md:flex">
               <h1 className="text-xl">🥺</h1>
               <h1 className="tracking-wider text-xs text-gray-500">
                 High server traffic causing delay ...
@@ -133,21 +136,21 @@ const WriteProposal = () => {
           )}
           <button
             onClick={handleGenerate}
-            className={`flex items-center justify-center gap-4 w-48 shadow-md text-sm rounded-xl py-3 px-8 ${
+            className={`flex items-center justify-center gap-4 w-16 md:w-48 shadow-md text-sm rounded-xl py-3 px-0 md:px-8 ${
               hasError ? "bg-red-400" : "bg-primary"
             }`}
           >
             {isLoading ? (
-              <Btn_Loader text={'Generating'}/>
+              <Btn_Loader text={"Generating"} />
             ) : hasError ? (
               <>
                 <MdOutlineError size={20} />
-                <h1 className="tracking-wider">Try again</h1>
+                <h1 className="tracking-wider hidden md:flex">Try again</h1>
               </>
             ) : (
               <>
                 <HiLightningBolt />
-                <h1 className="tracking-wider">Generate</h1>
+                <h1 className="tracking-wider hidden md:flex">Generate</h1>
               </>
             )}
           </button>
@@ -182,7 +185,7 @@ const WriteProposal = () => {
               id="About"
               name="text"
               value={about}
-              className="block p-4 mt-2 mb-4 grow text-sm text-dark bg-[#ECF2FF] rounded-xl border-transparent focus:border-transparent focus:ring-2 outline-0"
+              className="block p-4 mt-2 mb-0 md:mb-5 grow text-sm text-dark bg-[#ECF2FF] rounded-xl border-transparent focus:border-transparent focus:ring-2 outline-0"
               placeholder="Copy and paste job description here..."
               onChange={(e) => setAbout(e.target.value)}
             ></textarea>
@@ -190,7 +193,7 @@ const WriteProposal = () => {
         </div>
 
         <div className="flex flex-col w-2/5 bg-white">
-          <h1 className="text-dark tracking-wider mb-5 text-sm">
+          <h1 className="text-dark tracking-wider text-sm">
             Additional questions
           </h1>
           {questions.map((question, index) => (
@@ -212,7 +215,7 @@ const WriteProposal = () => {
           <button
             onClick={handleAddQuestion}
             disabled={questions.length === 5}
-            className="bg-primary shadow-sm w-52 text-sm rounded-xl py-3 px-8 mt-6 disabled:bg-[#ECF2FF] disabled:cursor-not-allowed"
+            className="bg-primary shadow-sm w-52 mb-6 md:mb-0 text-sm rounded-xl py-3 px-8 mt-6 disabled:bg-[#ECF2FF] disabled:cursor-not-allowed"
           >
             Add Question
           </button>

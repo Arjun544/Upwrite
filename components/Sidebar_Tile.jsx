@@ -33,8 +33,8 @@ const SidebarTile = ({ item }) => {
       <div
         className={` ${
           router.asPath === item.link
-            ? "h-2 w-8 mb-4 border-b-4 border-primary"
-            : "mb-6"
+            ? "h-2 w-8 mb-2 border-b-4 border-primary"
+            : "mb-4"
         } transition-colors duration-300`}
       ></div>
       {isShowingToolTip && (

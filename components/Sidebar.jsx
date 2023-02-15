@@ -70,8 +70,8 @@ const Sidebar = () => {
     }
   };
   return (
-    <div className="flex flex-col fixed h-full items-center justify-between px-4 py-4 bg-white border-r-2">
-      <div className="flex flex-col gap-10 ">
+    <div className="flex flex-col fixed h-full items-center justify-between px-1 md:px-4 py-4 bg-white border-r-2">
+      <div className="flex flex-col gap-6 ">
         <Link
           onClick={(e) => {
             setCurrentStep(1);
@@ -80,13 +80,13 @@ const Sidebar = () => {
           aria-label="Home"
           className="text-primary"
         >
-          <SiUpwork size={45} />
+          <SiUpwork className="h-8 w-8 md:h-10 md:w-10 mb-2 md:mb-4" />
         </Link>
         {items.map((item) => (
           <SidebarTile key={item.id} item={item} />
         ))}
       </div>
-      <div className="flex flex-col items-center gap-10">
+      <div className="flex flex-col items-center gap-6">
         <div
           onClick={session ? () => signOut() : () => signIn("google")}
           onMouseEnter={handleShowLoginToolTip}
@@ -94,9 +94,13 @@ const Sidebar = () => {
           className="flex items-center relative justify-around cursor-pointer transition-all duration-300"
         >
           {session ? (
-            <RiLogoutCircleFill size={26} className="text-red-400" />
+            <RiLogoutCircleFill
+              className="text-red-400 h-8 w-8 md:h-9 md:w-9"
+            />
           ) : (
-            <RiLoginCircleFill size={26} className="text-dark" />
+            <RiLoginCircleFill
+              className="text-dark h-8 w-8 md:h-9 md:w-9"
+            />
           )}
           {isShowingLoginToolTip && (
             <div className="flex absolute items-center justify-center left-12 w-32 py-1 bg-dark rounded-lg">
@@ -130,9 +134,9 @@ const Sidebar = () => {
           onClick={handleAddNewProposal}
           onMouseEnter={handleShowProposalToolTip}
           onMouseLeave={handleHideProposalToolTip}
-          className="flex items-center relative justify-around h-11 rounded-xl gap-4 px-3 bg-primary cursor-pointer hover:bg-opacity-80 transition-all duration-300"
+          className="flex items-center relative justify-around h-11 rounded-xl gap-4 px-3 mx-1 md:mx-0 bg-primary cursor-pointer hover:bg-opacity-80 transition-all duration-300"
         >
-          <RiAddLine size={26} className="text-white" />
+          <RiAddLine className="text-white h-4 w-4 md:h-6 md:w-6" />
           {isShowingProposalToolTip && (
             <div className="flex absolute items-center justify-center left-16 w-32 py-1 bg-dark rounded-lg">
               <span className="text-sm text-white">New Proposal</span>

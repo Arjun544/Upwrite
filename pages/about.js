@@ -12,8 +12,8 @@ export default function About() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex flex-col items-center justify-evenly h-full pl-24 ml-2 md:ml-0 md:pl-28">
-        <h1 className="text-2xl md:text-3xl text-primary tracking-wider font-semibold">
+      <div className="flex flex-col items-center justify-evenly h-full pl-16 ml-2 md:ml-0 md:pl-28">
+        <h1 className="text-xl md:text-3xl text-primary tracking-wider font-semibold">
           Say goodbye to proposal struggles
         </h1>
 

@@ -72,15 +72,15 @@ const Response = () => {
   return (
     <div className="flex flex-col grow overflow-y-scroll">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-dark text-xl tracking-wider mb-8 pt-4">
+        <h1 className="text-dark md:text-xl tracking-wider mb-8 pt-4">
           Craft winning proposals with ease
         </h1>
         <button
           onClick={handleBack}
-          className="flex items-center justify-center gap-4 bg-primary w-38 shadow-md text-sm rounded-xl py-3 px-8"
+          className="flex items-center justify-center gap-4 bg-primary w-14 md:w-48 shadow-md text-sm rounded-xl py-3 px-0 md:px-8 "
         >
           <MdArrowBackIos />
-          <h1 className="tracking-wider">Back</h1>
+          <h1 className="tracking-wider hidden md:flex">Back</h1>
         </button>
       </div>
       <div className="flex flex-col p-4 w-full bg-[#ECF2FF] mb-4 rounded-2xl gap-4">
@@ -89,7 +89,7 @@ const Response = () => {
           className="flex items-center justify-center w-28 gap-4 h-10 rounded-xl cursor-pointer bg-blue-200 hover:bg-blue-300 transition-all duration-300"
         >
           <TbCopy size={20} />
-          <h1 className="text-sm">Copy</h1>
+          <h1 className="text-xs md:text-sm tracking-wider">Copy</h1>
         </div>
         <h1 className="tracking-widest">Proposal</h1>
         <p className="text-sm whitespace-pre-wrap">{proposal.text}</p>

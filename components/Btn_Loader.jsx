@@ -81,7 +81,7 @@ const Btn_Loader = ({text}) => {
           strokeWidth="24"
         ></line>
       </svg>
-      <span className="text-sm tracking-wider text-black">{text}...</span>
+      <span className="hidden text-sm tracking-wider text-black md:flex">{text}...</span>
     </div>
   );
 }

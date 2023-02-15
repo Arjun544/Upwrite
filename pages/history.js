@@ -72,8 +72,8 @@ export default function History() {
   };
   if (!session) {
     return (
-      <div className="flex items-center justify-center w-full h-full">
-        <div className="flex flex-col items-center p-10 bg-[#ECF2FF] rounded-3xl gap-6 shadow-md">
+      <div className="flex items-center justify-center w-full h-full pl-14 md:pl-0">
+        <div className="flex flex-col items-center p-4 md:p-10 bg-[#ECF2FF] rounded-3xl gap-6 shadow-md">
           <h1>Sign in to see history</h1>
           <button
             onClick={() => signIn("google")}
@@ -95,8 +95,8 @@ export default function History() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex flex-col pl-24 md:pl-28 pt-4">
-        <h1 className="tracking-wider text-xl">History</h1>
+      <div className="flex flex-col pl-14 md:pl-24 pt-4">
+        <h1 className="tracking-wider text-xl pl-4  md:pl-0">History</h1>
         {isLoading && (
           <div className="flex flex-col items-center justify-center w-full pt-96 gap-4">
             <Btn_Loader text={"Loading"} />
@@ -121,7 +121,7 @@ export default function History() {
           </div>
         )}
         {!isLoading && !error && history.length !== 0 && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 my-6 pr-4 md:pr-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 my-6 pr-4 ml-4 md:ml-0 md:pr-8">
             {history.map((item) => (
               <div
                 key={item.id}
