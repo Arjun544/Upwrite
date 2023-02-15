@@ -1,6 +1,28 @@
 import Head from "next/head";
+import {getSession, useSession, signIn, signOut } from "next-auth/react";
+import { RiGoogleFill } from "react-icons/ri";
 
 export default function History() {
+  const { data: session } = useSession();
+
+  if (!session) {
+    return (
+      <div className="flex items-center justify-center w-full h-full">
+        <div className="flex flex-col items-center p-10 bg-[#ECF2FF] rounded-3xl gap-6 shadow-md">
+          <h1>Sign in to see history</h1>
+          <button
+            onClick={() => signIn("google")}
+            className="flex items-center justify-center bg-dark py-3 px-6 rounded-xl gap-2"
+          >
+            <RiGoogleFill size={24} className="text-blue-400" />
+            <h1 className="text-white text-sm">Continue with Google</h1>
+
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <Head>
@@ -9,7 +31,20 @@ export default function History() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <span>History</span>
+      <span>Signed in as {session.user.email} </span>
+      <button onClick={() => signOut()}>Signout</button>
     </>
   );
+
+  
+}
+
+export async function getServerSideProps(ctx) {
+  const session = await getSession(ctx);
+
+  return {
+    props: {
+      session,
+    },
+  };
 }
