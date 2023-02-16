@@ -77,25 +77,24 @@ const WriteProposal = () => {
           descriptionInput,
           about
         );
-
+        var answers= [];
         if (questions.length > 0) {
           for (const question of questions.filter(
             (ques) => ques.text.length > 0
           )) {
             const { data: questionData } = await generateAnswer(question.text);
-            console.log("question", question);
-            setProposal({
-              text: proposalData.choices[0].text,
-              answers: [
-                {
-                  question: question.text,
-                  answer: questionData.choices[0].text,
-                },
-              ],
-              description: descriptionInput,
-              about: about,
+            answers.push({
+              question: question.text,
+              answer: questionData.choices[0].text,
             });
           }
+          console.log("answers", answers);
+          setProposal({
+            text: proposalData.choices[0].text,
+            answers: answers,
+            description: descriptionInput,
+            about: about,
+          });
         } else {
           setProposal({
             text: proposalData.choices[0].text,

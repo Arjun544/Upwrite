@@ -18,6 +18,8 @@ const Response = () => {
 
   useEffect(() => {
     const saveHistory = async () => {
+    console.log("proposal", proposal);
+
       const { data: records, error } = await supabase
         .from("history")
         .select("*")
@@ -25,7 +27,7 @@ const Response = () => {
       console.log("hasRecord", records);
       // If has history record, only insert proposal ,else create new record
       if (records.length > 0) {
-        console.log("Has record");
+        console.log("Has record", proposal);
         const { error: proposalError } = await supabase
           .from("proposals")
           .insert({
