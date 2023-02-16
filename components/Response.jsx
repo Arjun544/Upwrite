@@ -18,8 +18,6 @@ const Response = () => {
 
   useEffect(() => {
     const saveHistory = async () => {
-    console.log("proposal", proposal);
-
       const { data: records, error } = await supabase
         .from("history")
         .select("*")
@@ -56,7 +54,7 @@ const Response = () => {
           });
       }
     };
-    if (!isOnlyViewingProposal) {
+    if (!isOnlyViewingProposal && session) {
       saveHistory();
     }
   }, []);
