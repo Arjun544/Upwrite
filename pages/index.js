@@ -2,7 +2,6 @@ import WriteProposal from "@/components/WriteProposal";
 import Response from "@/components/Response";
 import Head from "next/head";
 import { useContext } from "react";
-import { Toaster } from "react-hot-toast";
 import { AppContext } from "./_app";
 import { getSession } from "next-auth/react";
 import nookies from "nookies";
@@ -21,8 +20,6 @@ export default function Home() {
       </Head>
 
       <div className="flex w-full min-h-screen gap-8 pr-4 pl-[70px] md:pl-28 overflow-hidden">
-        <Toaster containerClassName="text-sm" />
-
         {currentStep === 1 ? (
           <WriteProposal setCurrentStep={setCurrentStep} />
         ) : (

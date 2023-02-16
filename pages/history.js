@@ -70,6 +70,26 @@ export default function History() {
       setHistory(filteredHistory);
     }
   };
+
+  const handleClearAll = async () => {
+    const { error } = await supabase
+      .from("proposals")
+      .delete()
+      .or(`user_id.eq.${session.user.id}`);
+
+    if (error) {
+      toast("Failed to clear", {
+        icon: "🥺",
+      });
+    } else {
+      toast("Successfully cleared", {
+        icon: "🚀",
+      });
+
+      setHistory([]);
+    }
+  };
+
   if (!session) {
     return (
       <div className="flex items-center justify-center w-full h-full pl-14 md:pl-0">
@@ -96,7 +116,15 @@ export default function History() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex flex-col pl-14 md:pl-24 pt-4">
-        <h1 className="tracking-wider text-xl pl-4  md:pl-0">History</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="tracking-wider text-xl pl-4  md:pl-0">History</h1>
+          <button
+            onClick={handleClearAll}
+            className="bg-red-400 tracking-wider text-sm px-6 py-2 rounded-xl mr-5 md:mr-10 hover:bg-red-500"
+          >
+            Clear All
+          </button>
+        </div>
         {isLoading && (
           <div className="flex flex-col items-center justify-center w-full pt-96 gap-4">
             <Btn_Loader text={"Loading"} />
