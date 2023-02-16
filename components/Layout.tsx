@@ -1,7 +1,12 @@
+import { Toaster } from "react-hot-toast";
+import React from "react";
 import Sidebar from "./Sidebar";
-import {Toaster} from "react-hot-toast";
 
-const Layout = ({ children }) => {
+interface Props {
+  children: Array<React.ReactElement>;
+}
+
+const Layout = ({ children }: Props) => {
   return (
     <div className="h-screen flex justify-start">
       <Toaster containerClassName="text-sm" />

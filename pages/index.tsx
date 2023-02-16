@@ -1,23 +1,23 @@
-import WriteProposal from "@/components/WriteProposal";
-import Response from "@/components/Response";
+import Response from "../components/Response";
+import WriteProposal from "../components/WriteProposal";
 import Head from "next/head";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { AppContext } from "./_app";
 import { getSession } from "next-auth/react";
 import nookies from "nookies";
+import { AppContent } from "../utils/types";
+import { GetServerSideProps } from "next";
 
+type Props = {};
 
-export default function Home() {
-  const { currentStep, setCurrentStep } = useContext(AppContext);
+const Home = (props: Props) => {
+  const { currentStep, setCurrentStep } = useContext<AppContent>(AppContext);
 
   return (
     <>
       <Head>
         <title>Upwrite</title>
-        <meta
-          name="description"
-          content="Craft winning proposals with ease"
-        />
+        <meta name="description" content="Craft winning proposals with ease" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -31,9 +31,11 @@ export default function Home() {
       </div>
     </>
   );
-}
+};
 
-export async function getServerSideProps(ctx) {
+export default Home;
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getSession(ctx);
   if (session) {
     nookies.set(ctx, "supabaseAccessToken", session.supabaseAccessToken, {
@@ -46,4 +48,4 @@ export async function getServerSideProps(ctx) {
       session,
     },
   };
-}
+};

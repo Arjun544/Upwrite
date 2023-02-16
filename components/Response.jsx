@@ -2,14 +2,14 @@ import React, { useContext, useEffect } from "react";
 import { TbCopy } from "react-icons/tb";
 import { MdArrowBackIos } from "react-icons/md";
 import { toast } from "react-hot-toast";
-import { AppContext } from "@/pages/_app";
+import { AppContext } from "../pages/_app";
 import { useSession } from "next-auth/react";
 import uuid from "react-uuid";
-import { supabase } from "@/utils/supabase";
+import { supabase } from "../utils/supabase";
 
 const Response = () => {
   const {
-    proposal,
+    proposal, 
     isOnlyViewingProposal,
     setIsOnlyViewingProposal,
     setCurrentStep,

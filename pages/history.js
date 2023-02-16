@@ -2,11 +2,11 @@ import Head from "next/head";
 import { useSession, signIn } from "next-auth/react";
 import { RiGoogleFill } from "react-icons/ri";
 import { useContext, useEffect, useState } from "react";
-import { supabase } from "@/utils/supabase";
+import { supabase } from "../utils/supabase";
 import { IoMdTrash } from "react-icons/io";
 import { AppContext } from "./_app";
 import { useRouter } from "next/router";
-import Btn_Loader from "@/components/Btn_Loader";
+import Btn_Loader from "../components/Btn_Loader";
 import { toast } from "react-hot-toast";
 
 export default function History() {
