@@ -9,18 +9,18 @@ export default NextAuth({
   // https://next-auth.js.org/configuration/providers
   providers: [
     GoogleProvider({
-      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
-  secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   adapter: SupabaseAdapter({
-    url: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    secret: process.env.NEXT_PUBLIC_SUPABASE_ROLE_KEY,
+    url: process.env.SUPABASE_URL,
+    secret: process.env.SUPABASE_ROLE_KEY,
   }),
   callbacks: {
     async session({ session, user }) {
-      const signingSecret = process.env.NEXT_PUBLIC_SUPABASE_JWT_SECRET;
+      const signingSecret = process.env.SUPABASE_JWT_SECRET;
       if (signingSecret) {
         const payload = {
           aud: "authenticated",

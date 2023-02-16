@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create();
-const CHAT_GPT_APIKEY = process.env.NEXT_PUBLIC_CHAT_GPT_APIKEY;
-const CHAT_GPT_URL = process.env.NEXT_PUBLIC_CHAT_GPT_URL;
+const CHAT_GPT_APIKEY = process.env.CHAT_GPT_APIKEY;
+const CHAT_GPT_URL = process.env.CHAT_GPT_URL;
 
 export const generateProposal = async (proposal, about) =>
   await api.post(
