@@ -1,16 +1,20 @@
-import { AppContext } from "@/pages/_app";
+import { AppContext } from "../pages/_app";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
+import { AppContent, NavItem } from "../utils/types";
 
-const SidebarTile = ({ item }) => {
-  const { setCurrentStep } = useContext(AppContext);
+interface Props {
+  item: NavItem;
+}
+
+const SidebarTile = ({ item }: Props) => {
+  const { setCurrentStep } = useContext<AppContent>(AppContext);
   const router = useRouter();
-  const [isShowingToolTip, setIsShowingToolTip] = useState(false);
+  const [isShowingToolTip, setIsShowingToolTip] = useState<boolean>(false);
 
   const handleShowToolTip = () => setIsShowingToolTip(true);
   const handleHideToolTip = () => setIsShowingToolTip(false);
-
   return (
     <div
       key={item.id}
@@ -47,3 +51,4 @@ const SidebarTile = ({ item }) => {
 };
 
 export default SidebarTile;
+

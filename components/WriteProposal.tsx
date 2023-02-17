@@ -1,15 +1,20 @@
-import React, { useContext, useState } from "react";
+import React, { Dispatch, SetStateAction, useContext, useState } from "react";
 import uuid from "react-uuid";
 import { RiCloseCircleFill } from "react-icons/ri";
 import { HiLightningBolt } from "react-icons/hi";
 import { toast } from "react-hot-toast";
 import { MdOutlineError } from "react-icons/md";
 
-import { generateAnswer, generateProposal } from "@/services/chatgpt_services";
+import { generateAnswer, generateProposal } from "../services/chatgpt_services";
 import Btn_Loader from "./Btn_Loader";
-import { AppContext } from "@/pages/_app";
+import { AppContext } from "../pages/_app";
+import { AppContent, LocalQuestion, RemoteQuestion } from "../utils/types";
 
-const WriteProposal = () => {
+interface Props {
+  setCurrentStep: Dispatch<SetStateAction<number>>;
+}
+
+const WriteProposal = (props: Props) => {
   const {
     setProposal,
     descriptionInput,
@@ -19,12 +24,14 @@ const WriteProposal = () => {
     questions,
     setQuestions,
     setCurrentStep,
-  } = useContext(AppContext);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasError, setHasError] = useState(false);
-  const [isReqTakingLong, setIsReqTakingLong] = useState(false);
+  } = useContext<AppContent>(AppContext);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [hasError, setHasError] = useState<boolean>(false);
+  const [isReqTakingLong, setIsReqTakingLong] = useState<boolean>(false);
 
-  const handleAddQuestion = (e) => {
+  const handleAddQuestion = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): void => {
     e.preventDefault();
     setQuestions([
       ...questions,
@@ -35,19 +42,25 @@ const WriteProposal = () => {
     ]);
   };
 
-  const handleRemoveQuestion = (e, id) => {
+  const handleRemoveQuestion = (
+    e: React.MouseEvent<SVGElement, MouseEvent>,
+    id: string
+  ): void => {
     e.preventDefault();
     setQuestions(questions.filter((question) => question.id !== id));
   };
 
-  const handleUpdateQuestion = (e, index) => {
+  const handleUpdateQuestion = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ): void => {
     const { name, value } = e.target;
     const list = [...questions];
     list[index][name] = value;
     setQuestions(list);
   };
 
-  const handleGenerate = async () => {
+  const handleGenerate = async (): Promise<void> => {
     if (descriptionInput === "") {
       toast("Job description can't be empty", {
         icon: "🥺",
@@ -65,7 +78,7 @@ const WriteProposal = () => {
         icon: "🥺",
       });
     } else {
-      var timeout;
+      let timeout: ReturnType<typeof setTimeout>;
       try {
         timeout = setTimeout(() => {
           setIsReqTakingLong(true);
@@ -73,31 +86,32 @@ const WriteProposal = () => {
 
         setIsLoading(true);
         setHasError(false);
-        const { data: proposalData } = await generateProposal(
+        const { text: remoteProposal } = await generateProposal(
           descriptionInput,
           about
         );
-        var answers= [];
+        var answers: Array<RemoteQuestion> = [];
         if (questions.length > 0) {
           for (const question of questions.filter(
             (ques) => ques.text.length > 0
           )) {
-            const { data: questionData } = await generateAnswer(question.text);
+            const { text: remoteQuestion } = await generateAnswer(
+              question.text
+            );
             answers.push({
               question: question.text,
-              answer: questionData.choices[0].text,
+              answer: remoteQuestion,
             });
           }
-          console.log("answers", answers);
           setProposal({
-            text: proposalData.choices[0].text,
+            text: remoteProposal,
             answers: answers,
             description: descriptionInput,
             about: about,
           });
         } else {
           setProposal({
-            text: proposalData.choices[0].text,
+            text: remoteProposal,
             answers: [],
             description: descriptionInput,
             about: about,
@@ -212,7 +226,7 @@ const WriteProposal = () => {
             </div>
           ))}
           <button
-            onClick={handleAddQuestion}
+            onClick={(e) => handleAddQuestion(e)}
             disabled={questions.length === 5}
             className="bg-primary shadow-sm w-52 mb-6 md:mb-0 text-sm rounded-xl py-3 px-8 mt-6 disabled:bg-[#ECF2FF] disabled:cursor-not-allowed"
           >

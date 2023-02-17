@@ -2,19 +2,23 @@ import React, { useContext, useEffect } from "react";
 import { TbCopy } from "react-icons/tb";
 import { MdArrowBackIos } from "react-icons/md";
 import { toast } from "react-hot-toast";
-import { AppContext } from "@/pages/_app";
+import { AppContext } from "../pages/_app";
 import { useSession } from "next-auth/react";
 import uuid from "react-uuid";
-import { supabase } from "@/utils/supabase";
+import { supabase } from "../utils/supabase";
+import { AppContent } from "../utils/types";
 
-const Response = () => {
+interface Props {}
+
+const Response = (props: Props) => {
   const {
     proposal,
     isOnlyViewingProposal,
     setIsOnlyViewingProposal,
     setCurrentStep,
-  } = useContext(AppContext);
+  } = useContext<AppContent>(AppContext);
   const { data: session } = useSession();
+
 
   useEffect(() => {
     const saveHistory = async () => {
@@ -22,20 +26,25 @@ const Response = () => {
         .from("history")
         .select("*")
         .eq("user_id", session.user.id);
-      console.log("hasRecord", records);
       // If has history record, only insert proposal ,else create new record
       if (records.length > 0) {
-        console.log("Has record", proposal);
         const { error: proposalError } = await supabase
           .from("proposals")
           .insert({
             id: uuid(),
             history_id: records[0].id,
             user_id: session.user.id,
-            proposal: proposal,
+            proposal: {
+              text: proposal.text,
+              about: proposal.about,
+              answers: proposal.answers.reduce((json, value, key) => {
+                json[key] = value;
+                return json;
+              }, []),
+              description: proposal.description,
+            },
           });
       } else {
-        console.log("Has no record");
         const { data: historyData, error: historyError } = await supabase
           .from("history")
           .insert({
@@ -43,14 +52,23 @@ const Response = () => {
             user_id: session.user.id,
           })
           .select();
-        console.log("history Data", historyData);
         const { error: proposalError } = await supabase
           .from("proposals")
           .insert({
             id: uuid(),
             history_id: historyData[0].id,
             user_id: session.user.id,
-            proposal: proposal,
+            proposal: {
+              text: proposal.text,
+              abbout: proposal.about,
+              answers: proposal.answers.map((answer) => [
+                {
+                  question: answer.answer,
+                  answer: answer.question,
+                },
+              ]),
+              description: proposal.description,
+            },
           });
       }
     };
@@ -59,16 +77,18 @@ const Response = () => {
     }
   }, []);
 
-  const handleBack = () => {
+  const handleBack = (): void => {
     setCurrentStep(1);
     setIsOnlyViewingProposal(false);
   };
-  const handleCopy = () => {
+
+  const handleCopy = (): void => {
     navigator.clipboard.writeText(proposal.text);
     toast("Copied", {
       icon: "🚀",
     });
   };
+
   return (
     <div className="flex flex-col grow overflow-y-scroll">
       <div className="flex items-center justify-between mb-4">

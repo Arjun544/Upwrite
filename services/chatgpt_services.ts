@@ -1,11 +1,20 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
+import {
+  LocalProposal,
+  LocalQuestion,
+  RemoteProposal,
+  RemoteQuestion,
+} from "../utils/types";
 
 const api = axios.create();
 const CHAT_GPT_APIKEY = process.env.CHAT_GPT_APIKEY;
 const CHAT_GPT_URL = process.env.CHAT_GPT_URL;
 
-export const generateProposal = async (proposal, about) =>
-  await api.post(
+export const generateProposal = async (
+  proposal: string,
+  about: string
+): Promise<RemoteProposal> => {
+  const { data }: AxiosResponse = await api.post(
     `${CHAT_GPT_URL}/completions`,
     {
       model: "text-davinci-003",
@@ -24,8 +33,13 @@ export const generateProposal = async (proposal, about) =>
     }
   );
 
-export const generateAnswer = async (question) =>
-  await api.post(
+  return { text: data.choices[0].text };
+};
+
+export const generateAnswer = async (
+  question: string
+): Promise<LocalQuestion> => {
+  const { data }: AxiosResponse = await api.post(
     `${CHAT_GPT_URL}/completions`,
     {
       model: "text-davinci-003",
@@ -41,3 +55,6 @@ export const generateAnswer = async (question) =>
       },
     }
   );
+
+  return { id: "", text: data.choices[0].text };
+};

@@ -5,18 +5,22 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import {
   RiHome5Fill,
   RiChatHistoryFill,
-  RiAddLine,
   RiInformationFill,
-  RiLoginCircleFill,
   RiLogoutCircleFill,
+  RiLoginCircleFill,
+  RiAddLine,
 } from "react-icons/ri";
 import { SiUpwork } from "react-icons/si";
 import SidebarTile from "./Sidebar_Tile";
-import { AppContext } from "@/pages/_app";
+import { AppContext } from "../pages/_app";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { AppContent } from "../utils/types";
+import { navItems } from "../utils/data";
 
-const Sidebar = () => {
+interface Props {}
+
+const Sidebar = (props: Props) => {
   const router = useRouter();
   const { data: session } = useSession();
   const {
@@ -25,32 +29,13 @@ const Sidebar = () => {
     setDescriptionInput,
     setAbout,
     setQuestions,
-  } = useContext(AppContext);
+  } = useContext<AppContent>(AppContext);
   const [isShowingProposalToolTip, setisShowingProposalToolTip] =
-    useState(false);
-  const [isShowingLoginToolTip, setisShowingLoginToolTip] = useState(false);
-  const [isShowingProfileToolTip, setisShowingProfileToolTip] = useState(false);
-
-  const items = [
-    {
-      id: 1,
-      link: "/",
-      name: "Home",
-      icon: <RiHome5Fill size={26} className="text-dark" />,
-    },
-    {
-      id: 2,
-      link: "/history",
-      name: "History",
-      icon: <RiChatHistoryFill size={26} className="text-dark" />,
-    },
-    {
-      id: 3,
-      link: "/about",
-      name: "About",
-      icon: <RiInformationFill size={26} className="text-dark" />,
-    },
-  ];
+    useState<boolean>(false);
+  const [isShowingLoginToolTip, setisShowingLoginToolTip] =
+    useState<boolean>(false);
+  const [isShowingProfileToolTip, setisShowingProfileToolTip] =
+    useState<boolean>(false);
 
   const handleShowProposalToolTip = () => setisShowingProposalToolTip(true);
   const handleHideProposalToolTip = () => setisShowingProposalToolTip(false);
@@ -61,7 +46,7 @@ const Sidebar = () => {
 
   const handleAddNewProposal = () => {
     setCurrentStep(1);
-    setProposal({});
+    setProposal((Proposal) => Proposal);
     setDescriptionInput("");
     setAbout("");
     setQuestions([]);
@@ -69,6 +54,7 @@ const Sidebar = () => {
       router.push("/");
     }
   };
+
   return (
     <div className="flex flex-col fixed h-full items-center justify-between px-1 md:px-4 py-4 bg-white border-r-2">
       <div className="flex flex-col gap-6 ">
@@ -82,7 +68,7 @@ const Sidebar = () => {
         >
           <SiUpwork className="h-8 w-8 md:h-10 md:w-10 mb-2 md:mb-4" />
         </Link>
-        {items.map((item) => (
+        {navItems.map((item) => (
           <SidebarTile key={item.id} item={item} />
         ))}
       </div>
@@ -94,13 +80,9 @@ const Sidebar = () => {
           className="flex items-center relative justify-around cursor-pointer transition-all duration-300"
         >
           {session ? (
-            <RiLogoutCircleFill
-              className="text-red-400 h-8 w-8 md:h-9 md:w-9"
-            />
+            <RiLogoutCircleFill className="text-red-400 h-8 w-8 md:h-9 md:w-9" />
           ) : (
-            <RiLoginCircleFill
-              className="text-dark h-8 w-8 md:h-9 md:w-9"
-            />
+            <RiLoginCircleFill className="text-dark h-8 w-8 md:h-9 md:w-9" />
           )}
           {isShowingLoginToolTip && (
             <div className="flex absolute items-center justify-center left-12 w-32 py-1 bg-dark rounded-lg">
