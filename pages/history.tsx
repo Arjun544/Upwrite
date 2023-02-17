@@ -1,50 +1,43 @@
 import Head from "next/head";
-import { useSession, signIn } from "next-auth/react";
+import { useSession, signIn, getSession } from "next-auth/react";
 import { RiGoogleFill } from "react-icons/ri";
 import { useContext, useEffect, useState } from "react";
-import { supabase } from "../utils/supabase";
+import { getServiceSupabase, supabase } from "../utils/supabase";
 import { IoMdTrash } from "react-icons/io";
 import { AppContext } from "./_app";
 import { useRouter } from "next/router";
 import Btn_Loader from "../components/Btn_Loader";
 import { toast } from "react-hot-toast";
 
-export default function History() {
+import React from "react";
+import { GetServerSideProps } from "next";
+import { History } from "../utils/types";
+import { Session } from "next-auth";
+
+interface Props {
+  history: History[] | null;
+}
+
+const History = ({ history }: Props) => {
   const { setCurrentStep, setProposal, setIsOnlyViewingProposal } =
     useContext(AppContext);
   const router = useRouter();
-  const { data: session } = useSession();
-  const [history, setHistory] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
+  const [allHistory, setAllHistory] = useState<History[]>(history);
+  const { data: session, status } = useSession();
 
   useEffect(() => {
-    const getHistory = async () => {
-      setIsLoading(true);
-      const { data, error } = await supabase
-        .from("proposals")
-        .select("*")
-        .eq("user_id", session.user.id);
-      setHistory(data);
-      setError(error);
-      setIsLoading(false);
-
-      console.log(data);
-    };
-    if (session) {
-      getHistory();
-    }
-  }, [session?.user?.id, session]);
+    setAllHistory(history);
+  }, [history]);
 
   const handleAddNew = () => {
     setCurrentStep(1);
     router.push("/");
   };
 
-  const handleOnClick = (item) => {
+  const handleOnClick = (item: History): void => {
     setProposal({
       text: item.proposal.text,
-      answers: item.proposal.answers,
+      answers: item.proposal.answers.map((answer)=> answer),
       description: item.proposal.description,
       about: item.proposal.about,
     });
@@ -53,7 +46,10 @@ export default function History() {
     setCurrentStep(2);
   };
 
-  const handleDelete = async (e, id) => {
+  const handleDelete = async (
+    e: React.MouseEvent<SVGElement, MouseEvent>,
+    id: string
+  ): Promise<void> => {
     e.stopPropagation();
     const { error } = await supabase.from("proposals").delete().eq("id", id);
     if (error) {
@@ -67,7 +63,7 @@ export default function History() {
       const filteredHistory = history.filter(function (e) {
         return e.id !== id;
       });
-      setHistory(filteredHistory);
+      setAllHistory(filteredHistory);
     }
   };
 
@@ -85,10 +81,17 @@ export default function History() {
       toast("Successfully cleared", {
         icon: "🚀",
       });
-
-      setHistory([]);
+      setAllHistory([]);
     }
   };
+
+  if (status === "loading") {
+    return (
+      <div className="flex flex-col items-center justify-center w-full pt-96 gap-4">
+        <Btn_Loader text={"Loading"} />
+      </div>
+    );
+  }
 
   if (!session) {
     return (
@@ -110,15 +113,15 @@ export default function History() {
   return (
     <>
       <Head>
-        <title>Upwrite</title>
-        <meta name="description" content="Craft winning proposals with ease" />
+        <title>Upwrite</title>{" "}
+        <meta name="description" content="Craft winning proposals with ease" />{" "}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex flex-col pl-14 md:pl-24 pt-4">
         <div className="flex items-center justify-between">
           <h1 className="tracking-wider text-xl pl-4  md:pl-0">History</h1>
-          {history.length > 0 && (
+          {allHistory != null && allHistory.length > 0 && (
             <button
               onClick={handleClearAll}
               className="bg-red-400 tracking-wider text-sm px-6 py-2 rounded-xl mr-5 md:mr-10 hover:bg-red-500"
@@ -127,19 +130,8 @@ export default function History() {
             </button>
           )}
         </div>
-        {isLoading && (
-          <div className="flex flex-col items-center justify-center w-full pt-96 gap-4">
-            <Btn_Loader text={"Loading"} />
-          </div>
-        )}
-        {error && !isLoading && history.length === 0 && (
-          <div className="flex flex-col items-center justify-center w-full pt-96 gap-4">
-            <h1 className="text-slate-500 tracking-wider">
-              Failed to get history
-            </h1>
-          </div>
-        )}
-        {!isLoading && !error && history.length === 0 && (
+
+        {allHistory == null || allHistory.length == 0 && (
           <div className="flex flex-col items-center justify-center w-full pt-96 gap-4">
             <h1 className="text-slate-500 tracking-wider">No History</h1>
             <button
@@ -150,9 +142,9 @@ export default function History() {
             </button>
           </div>
         )}
-        {!isLoading && !error && history.length !== 0 && (
+        {allHistory != null && allHistory.length !== 0 && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 my-6 pr-4 ml-4 md:ml-0 md:pr-8">
-            {history.map((item) => (
+            {allHistory.map((item) => (
               <div
                 key={item.id}
                 onClick={(e) => handleOnClick(item)}
@@ -175,4 +167,25 @@ export default function History() {
       </div>
     </>
   );
-}
+};
+
+export default History;
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getSession(ctx);
+  var history;
+  if (session) {
+    const supabase = getServiceSupabase(session.supabaseAccessToken);
+    const { data, error } = await supabase
+      .from("proposals")
+      .select("*")
+      .eq("user_id", session.user.id);
+    history = data;
+  }
+
+  return {
+    props: {
+      history: history ?? null,
+    },
+  };
+};

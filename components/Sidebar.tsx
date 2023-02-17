@@ -15,7 +15,7 @@ import SidebarTile from "./Sidebar_Tile";
 import { AppContext } from "../pages/_app";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { AppContent, Proposal } from "../utils/types";
+import { AppContent } from "../utils/types";
 import { navItems } from "../utils/data";
 
 interface Props {}

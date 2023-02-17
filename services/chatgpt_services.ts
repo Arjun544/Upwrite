@@ -1,5 +1,10 @@
 import axios, { AxiosResponse } from "axios";
-import { LocalProposal, RemoteProposal, RemoteQuestion } from "../utils/types";
+import {
+  LocalProposal,
+  LocalQuestion,
+  RemoteProposal,
+  RemoteQuestion,
+} from "../utils/types";
 
 const api = axios.create();
 const CHAT_GPT_APIKEY = process.env.CHAT_GPT_APIKEY;
@@ -28,16 +33,12 @@ export const generateProposal = async (
     }
   );
 
-  const choices: Array<string> = data.choices.map(
-    (choice: { text: string }) => choice.text
-  );
-
-  return data.choices[0].text;
+  return { text: data.choices[0].text };
 };
 
 export const generateAnswer = async (
   question: string
-): Promise<RemoteQuestion> => {
+): Promise<LocalQuestion> => {
   const { data }: AxiosResponse = await api.post(
     `${CHAT_GPT_URL}/completions`,
     {
@@ -55,9 +56,5 @@ export const generateAnswer = async (
     }
   );
 
-  const choices: Array<string> = data.choices.map(
-    (choice: { text: string }) => choice.text
-  );
-
-  return data.choices[0].text;
+  return { id: "", text: data.choices[0].text };
 };

@@ -95,7 +95,7 @@ const WriteProposal = (props: Props) => {
           for (const question of questions.filter(
             (ques) => ques.text.length > 0
           )) {
-            const { question: remoteQuestion } = await generateAnswer(
+            const { text: remoteQuestion } = await generateAnswer(
               question.text
             );
             answers.push({
@@ -103,7 +103,6 @@ const WriteProposal = (props: Props) => {
               answer: remoteQuestion,
             });
           }
-          console.log("answers", answers);
           setProposal({
             text: remoteProposal,
             answers: answers,

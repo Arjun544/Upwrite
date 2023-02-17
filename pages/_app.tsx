@@ -11,7 +11,7 @@ const poppins = Poppins({
 });
 
 import { SessionProvider } from "next-auth/react";
-import { AppContent, Proposal, LocalQuestion } from "../utils/types";
+import { AppContent, LocalProposal, LocalQuestion } from "../utils/types";
 import Layout from "../components/Layout";
 
 export const AppContext = createContext<AppContent>(null);
@@ -21,7 +21,7 @@ const App: React.FunctionComponent<AppProps> = ({
   pageProps: { session, ...pageProps },
 }) => {
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [proposal, setProposal] = useState<Proposal>();
+  const [proposal, setProposal] = useState<LocalProposal>();
   const [descriptionInput, setDescriptionInput] = useState<string>("");
   const [about, setAbout] = useState<string>("");
   const [questions, setQuestions] = useState<Array<LocalQuestion>>([]);

@@ -42,3 +42,10 @@ export interface RemoteQuestion {
   question: string;
   answer: string;
 }
+
+export interface History {
+  id: string;
+  proposal: LocalProposal;
+}
+
+
