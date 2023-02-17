@@ -1,6 +1,10 @@
 import { Html, Head, Main, NextScript } from 'next/document'
 
-export default function Document() {
+import React from 'react'
+
+type Props = {}
+
+const Document = (props: Props) => {
   return (
     <Html lang="en">
       <Head />
@@ -9,5 +13,7 @@ export default function Document() {
         <NextScript />
       </body>
     </Html>
-  )
+  );
 }
+
+export default Document

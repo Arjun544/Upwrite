@@ -3,9 +3,6 @@ import Link from "next/link";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 import {
-  RiHome5Fill,
-  RiChatHistoryFill,
-  RiInformationFill,
   RiLogoutCircleFill,
   RiLoginCircleFill,
   RiAddLine,

@@ -1,9 +1,18 @@
 import Head from "next/head";
 import Image from "next/image";
-import { RiMapPin2Fill, RiInstagramFill, RiLinkedinBoxFill, RiGithubFill } from "react-icons/ri";
+import {
+  RiMapPin2Fill,
+  RiInstagramFill,
+  RiLinkedinBoxFill,
+  RiGithubFill,
+} from "react-icons/ri";
 import { SiUpwork } from "react-icons/si";
 
-export default function About() {
+import React from "react";
+
+interface Props {}
+
+const About = (props: Props) => {
   return (
     <>
       <Head>
@@ -18,7 +27,7 @@ export default function About() {
         </h1>
 
         <div className="flex flex-col items-center">
-          <h1 className="text-xl text-dark tracking-wider pt-10 pb-4">
+          <h1 className="text-xl text-dark tracking-wider pt-10 md:pt-20 pb-4">
             What is Upwrite?
           </h1>
           <p className="w-full text-sm md:text-base first-letter:text-2xl md:first-letter:text-4xl md:w-3/5 tracking-wider pr-4">
@@ -30,7 +39,7 @@ export default function About() {
           </p>
         </div>
         <div className="flex flex-col w-full md:w-1/2 items-center gap-6 pr-4">
-          <h1 className="text-xl text-dark tracking-wider pt-10">
+          <h1 className="text-xl text-dark tracking-wider pt-10 md:pt-28">
             About Developer
           </h1>
 
@@ -97,4 +106,6 @@ export default function About() {
       </div>
     </>
   );
-}
+};
+
+export default About;

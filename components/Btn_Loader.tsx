@@ -1,6 +1,10 @@
-import React from 'react'
+import React from "react";
 
-const Btn_Loader = ({text}) => {
+interface Props {
+  text: string;
+}
+
+const Btn_Loader = ({ text }: Props) => {
   return (
     <div
       aria-label="Loading..."
@@ -81,9 +85,12 @@ const Btn_Loader = ({text}) => {
           strokeWidth="24"
         ></line>
       </svg>
-      <span className="hidden text-sm tracking-wider text-black md:flex">{text}...</span>
+      <span className="hidden text-sm tracking-wider text-black md:flex">
+        {text}...
+      </span>
     </div>
   );
-}
+};
 
-export default Btn_Loader
+export default Btn_Loader;
+
